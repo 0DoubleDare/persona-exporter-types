@@ -2,7 +2,8 @@
 name = "persona-exporter-types"
 version = "0.1.0"
 edition = "2024"
+description = "Data types for persona-exporter"
+repository = "https://github.com/0DoubleDare/persona-exporter-types"
 
 [dependencies]
-sysinfo = "0.39.3"
 serde = { version = "1.0.228", features = ["derive"] }
