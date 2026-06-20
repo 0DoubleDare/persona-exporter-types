@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 /// General structure that contains all the metrics of the working machine
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 pub struct ServerMetrics {
     pub sys_info: SystemInfo,
     pub disk_info: DiskInfo,
@@ -10,27 +10,23 @@ pub struct ServerMetrics {
     pub timestamp: u64,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 pub struct SystemInfo {
     pub total_memory: u64,
     pub used_memory: u64,
     pub total_swap: u64,
     pub used_swap: u64,
-    pub cpu_usage: f32,
-    pub physical_cpus_count: usize,
-    pub threads: usize,
-    pub load_average: LoadAverage,
 }
 
 ///
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 pub struct DiskInfo {
     pub total_space: u64,
     pub available_space: u64,
 }
 
 /// Network information
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 pub struct NetworkInfo {
     /// The name of your card's network interface
     pub interface_name: String,
@@ -51,7 +47,7 @@ pub struct NetworkInfo {
 }
 
 /// Statistics on the machine's processor
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 pub struct CpuInfo {
     /// System CPU usage. Measured as a percentage from 0%-100%
     pub cpu_usage: f32,
@@ -66,7 +62,7 @@ pub struct CpuInfo {
 }
 
 /// Processor thread information
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 pub struct ComponentInfo {
     /// Component name
     pub name: String,
@@ -75,12 +71,12 @@ pub struct ComponentInfo {
 }
 
 /// Load Average structure for `load_avg` field in [CpuInfo]
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default, Debug)]
 pub struct LoadAverage {
     /// LA at one minute
-    pub one: f32,
+    pub one: f64,
     /// LA at five minutes
-    pub five: f32,
+    pub five: f64,
     /// LA at fifteen minutes
-    pub fifteen: f32,
+    pub fifteen: f64,
 }
