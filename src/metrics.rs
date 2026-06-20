@@ -1,12 +1,14 @@
+use std::path::Components;
 use serde::{Deserialize, Serialize};
 
 /// General structure that contains all the metrics of the working machine
 #[derive(Serialize, Deserialize, Default, Debug)]
 pub struct ServerMetrics {
-    pub sys_info: SystemInfo,
-    pub disk_info: DiskInfo,
-    pub network_data: NetworkInfo,
-    pub cpu_info: CpuInfo,
+    pub system: Option<SystemInfo>,
+    pub disk: Option<DiskInfo>,
+    pub network: Option<NetworkInfo>,
+    pub cpu: Option<CpuInfo>,
+    pub components: Option<ComponentsInfo>,
     pub timestamp: u64,
 }
 
@@ -55,6 +57,12 @@ pub struct NetworkInfo {
     pub total_tx_errors: u64,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ComponentsInfo {
+    pub count: usize,
+    pub is_empty: bool,
+    pub components: Vec<ComponentInfo>
+}
 /// Statistics on the machine's processor
 #[derive(Serialize, Deserialize, Default, Debug)]
 pub struct CpuInfo {
@@ -64,19 +72,21 @@ pub struct CpuInfo {
     pub threads: usize,
     /// Number of physical processor cores
     pub physical_core_count: usize,
-    /// Processor Thread Information
-    pub components_info: Vec<ComponentInfo>,
 }
 
 /// Processor thread information
 #[derive(Serialize, Deserialize, Default, Debug)]
 pub struct ComponentInfo {
+    ///
+    pub id: String,
     /// Component name
     pub name: String,
     /// Component temp
     pub temp: f32,
     /// Critical temp
     pub critical_temp: f32,
+    /// Max temp of component
+    pub max_temp: f32,
 }
 
 /// Load Average structure for `load_avg` field in [CpuInfo]
