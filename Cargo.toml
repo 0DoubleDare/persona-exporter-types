@@ -5,7 +5,6 @@ edition = "2024"
 description = "Data types for persona-exporter"
 repository = "https://github.com/0DoubleDare/persona-exporter-types"
 license = "MIT OR Apache-2.0"
-license-file = "LICENSE.md"
 
 [dependencies]
 serde = { version = "1.0.228", features = ["derive"] }
