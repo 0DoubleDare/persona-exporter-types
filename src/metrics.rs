@@ -14,13 +14,22 @@ pub struct ServerMetrics {
 pub struct SystemInfo {
     pub total_memory: u64,
     pub used_memory: u64,
+    pub available_memory: u64,
+
     pub total_swap: u64,
     pub used_swap: u64,
+    pub free_swap: u64,
+
+    /// Metric showing the average load on processor threads
+    pub load_avg: LoadAverage,
 }
 
 ///
 #[derive(Serialize, Deserialize, Default, Debug)]
 pub struct DiskInfo {
+    pub name: String,
+    pub file_system: String,
+    pub kind: String,
     pub total_space: u64,
     pub available_space: u64,
 }
@@ -34,14 +43,14 @@ pub struct NetworkInfo {
     /// Total bytes received since the network card was turned on
     pub total_rx_bytes: u64,
     /// Total data packets received
-    pub total_rx_package: u64,
+    pub total_rx_packets: u64,
     /// Total errors when accepting data
     pub total_rx_errors: u64,
 
     /// Total bytes transferred since the network card was turned on
     pub total_tx_bytes: u64,
     /// Total data packets transferred
-    pub total_tx_package: u64,
+    pub total_tx_packets: u64,
     /// Total errors when sending data
     pub total_tx_errors: u64,
 }
@@ -51,8 +60,6 @@ pub struct NetworkInfo {
 pub struct CpuInfo {
     /// System CPU usage. Measured as a percentage from 0%-100%
     pub cpu_usage: f32,
-    /// Metric showing the average load on processor threads
-    pub load_avg: LoadAverage,
     /// Number of processor threads
     pub threads: usize,
     /// Number of physical processor cores
@@ -67,7 +74,9 @@ pub struct ComponentInfo {
     /// Component name
     pub name: String,
     /// Component temp
-    pub temp: f64,
+    pub temp: f32,
+    /// Critical temp
+    pub critical_temp: f32,
 }
 
 /// Load Average structure for `load_avg` field in [CpuInfo]
