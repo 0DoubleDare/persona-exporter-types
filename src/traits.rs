@@ -1,4 +1,3 @@
-
 pub enum DataUnit {
     Bytes = 1,
     KiloBytes = 1024,
