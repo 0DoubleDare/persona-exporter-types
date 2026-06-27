@@ -1,23 +1,49 @@
-// use std::path::Components;
-use serde::{Deserialize, Serialize};
-extern crate alloc;
-use alloc::string::String;
-use alloc::vec::Vec;
 /// General structure that contains all the metrics of the working machine
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct ServerMetrics {
+    /// Display system information
     pub system: Option<SystemInfo>,
+    /// RAM memory information
+    pub memory: Option<MemoryInfo>,
+    /// Disk indicators
     pub disk: Option<DiskInfo>,
+    /// Network indicators
     pub network: Option<NetworkInfo>,
+    /// CPU indicators
     pub cpu: Option<CpuInfo>,
+    /// Components indicators
     pub components: Option<ComponentsInfo>,
+    /// Time in UNIX when the metrics were recorded
     pub timestamp: u64,
 }
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct SystemInfo {
+    /// Name of your operating system.
+    ///
+    /// | PLATFORM | NAME |
+    /// | --- | --- |
+    /// | laptop with **Linux** | "NixOS" |
+    /// | PC with **Windows** | "Windows" |
+    pub name: String,
+    pub kernel_version: String,
+    pub kernel_long_version: String,
+    pub distribution_id: String,
+    pub distribution_id_like: Vec<String>,
+    pub boot_time: u64,
+    pub uptime: u64,
+    pub cpu_arch: String,
+    pub os_version: String,
+    pub host_name: String,
+}
+/// Details system memory information
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Default, Debug, Clone)]
+pub struct MemoryInfo {
+    /// Total amount RAM memory in your system
     pub total_memory: u64,
+    /// Used amount RAM memory in your system
     pub used_memory: u64,
     pub available_memory: u64,
 
@@ -31,7 +57,7 @@ pub struct SystemInfo {
 
 ///
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct DiskInfo {
     pub name: String,
     pub file_system: String,
@@ -42,7 +68,7 @@ pub struct DiskInfo {
 
 /// Network information
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct NetworkInfo {
     /// The name of your card's network interface
     pub interface_name: String,
@@ -62,15 +88,15 @@ pub struct NetworkInfo {
     pub total_tx_errors: u64,
 }
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct ComponentsInfo {
     pub count: usize,
     pub is_empty: bool,
-    pub components: Vec<ComponentInfo>
+    pub components: Vec<ComponentInfo>,
 }
 /// Statistics on the machine's processor
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct CpuInfo {
     /// System CPU usage. Measured as a percentage from 0%-100%
     pub cpu_usage: f32,
@@ -82,7 +108,7 @@ pub struct CpuInfo {
 
 /// Processor thread information
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct ComponentInfo {
     ///
     pub id: String,
@@ -98,7 +124,7 @@ pub struct ComponentInfo {
 
 /// Load Average structure for `load_avg` field in [CpuInfo]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct LoadAverage {
     /// LA at one minute
     pub one: f32,
