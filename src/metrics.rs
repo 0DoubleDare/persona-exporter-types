@@ -19,9 +19,6 @@ pub struct ServerMetrics {
 }
 /// General system information: kernel version, username,
 /// uptime, processor architecture, and so on.
-/// # Example
-/// ```text
-/// ```
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Debug, Clone)]
 pub struct SystemInfo {
@@ -32,14 +29,25 @@ pub struct SystemInfo {
     /// | laptop with **Linux** | "NixOS" |
     /// | PC with **Windows** | "Windows" |
     pub name: String,
+    /// kernel version of your OS
     pub kernel_version: String,
+    /// kernel version + system name
     pub kernel_long_version: String,
+    /// Unique your distribution ID
     pub distribution_id: String,
+    /// The family to which your distribution belongs.
+    /// for example, if you are using Ubuntu, the field
+    /// value will be `["debian"]`, since Ubuntu is a derivative of Debian.
     pub distribution_id_like: Vec<String>,
+    /// The UNIX time at which the system booted
     pub boot_time: u64,
+    /// System uptime
     pub uptime: u64,
+    /// Your processor architecture
     pub cpu_arch: String,
+    /// Your OS version
     pub os_version: String,
+    /// Your hostname
     pub host_name: String,
 }
 /// Details system memory information
@@ -56,7 +64,7 @@ pub struct MemoryInfo {
     /// program without compromising the OS.
     pub available_memory: u64,
 
-    /// Total paging file size
+    /// Total paging file size, see `total_memory`
     pub total_swap: u64,
     /// Used page file size, see `used_memory`
     pub used_swap: u64,
@@ -105,7 +113,7 @@ pub struct NetworkInfo {
     /// Total errors when sending data
     pub total_tx_errors: u64,
 }
-///  The component information primarily consists of data regarding the temperatures of
+/// The component information primarily consists of data regarding the temperatures of
 /// individual components (circuit boards, processor cores, etc.).
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Debug, Clone)]
@@ -114,7 +122,7 @@ pub struct ComponentsInfo {
     pub count: usize,
     /// Checks whether the component field is empty.
     pub is_empty: bool,
-    /// Components info
+    /// Components info, see [`ComponentInfo`]
     pub components: Vec<ComponentInfo>,
 }
 /// Statistics on the machine's processor
@@ -129,7 +137,7 @@ pub struct CpuInfo {
     pub physical_core_count: usize,
 }
 
-/// Processor thread information
+/// Processor thread information, used in [`ComponentsInfo`]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Debug, Clone)]
 pub struct ComponentInfo {
