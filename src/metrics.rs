@@ -50,24 +50,37 @@ pub struct MemoryInfo {
     pub total_memory: u64,
     /// Used amount RAM memory in your system
     pub used_memory: u64,
+    /// Free and physically accessible memory
+    pub free_memory: u64,
+    /// Available memory that the system can allocate to a
+    /// program without compromising the OS.
     pub available_memory: u64,
 
+    /// Total paging file size
     pub total_swap: u64,
+    /// Used page file size, see `used_memory`
     pub used_swap: u64,
+    /// Free and physically accessible swap, see `free_memory`
     pub free_swap: u64,
 
     /// Metric showing the average load on processor threads
     pub load_avg: LoadAverage,
 }
 
-///
+/// System disk space information for the root directory "/".
+/// There is no breakdown by physical storage devices.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Debug, Clone)]
 pub struct DiskInfo {
+    /// Disk name
     pub name: String,
+    /// File system, line "ext4", "btrfs"
     pub file_system: String,
+    /// Disk kind: HDD / SDD etc.
     pub kind: String,
+    /// Total space
     pub total_space: u64,
+    /// Available space
     pub available_space: u64,
 }
 
@@ -92,11 +105,16 @@ pub struct NetworkInfo {
     /// Total errors when sending data
     pub total_tx_errors: u64,
 }
+///  The component information primarily consists of data regarding the temperatures of
+/// individual components (circuit boards, processor cores, etc.).
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Debug, Clone)]
 pub struct ComponentsInfo {
+    /// Components count
     pub count: usize,
+    /// Checks whether the component field is empty.
     pub is_empty: bool,
+    /// Components info
     pub components: Vec<ComponentInfo>,
 }
 /// Statistics on the machine's processor
@@ -115,7 +133,7 @@ pub struct CpuInfo {
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Debug, Clone)]
 pub struct ComponentInfo {
-    ///
+    /// Component identifier recognized by the system kernel
     pub id: String,
     /// Component name
     pub name: String,
