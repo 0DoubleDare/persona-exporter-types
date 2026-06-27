@@ -1,9 +1,23 @@
-//! # Persona Exporter Types
-//! **Important:** *The crate is constantly updated and can undergo
+//! [![GitHub]](https://github.com/0DoubleDare/persona-exporter-types)&ensp;[![crates-io]](https://crates.io/crates/persona-exporter-types)&ensp;[![docs-rs]](crate)
+//!
+//! [GitHub]: https://img.shields.io/badge/github-8da0cb?style=for-the-badge&labelColor=555555&logo=github
+//! [crates-io]: https://img.shields.io/badge/crates.io-fc8d62?style=for-the-badge&labelColor=555555&logo=rust
+//! [docs-rs]: https://img.shields.io/badge/docs.rs-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs
+//!
+//! **Important**: *The crate is constantly updated and can undergo
 //! significant changes.*
 //!
 //! A separate, lightweight crate containing all the structures
 //! to be populated with the corresponding information.
+//! This crate is used in a custom [exporter](https://github.com/0DoubleDare/persona-exporter).
+//!
+//! **Also important**:
+//! All types and fields are primarily based on the [sysinfo](https://docs.rs/sysinfo/0.39.5/sysinfo/)
+//! metrics collection library, but you are free to use them however
+//! and in whatever context you wish. The documentation simply describes
+//! the purpose of the fields from the perspective of this crate's developer
+//! and is relevant only if you are using [sysinfo](https://docs.rs/sysinfo/0.39.5/sysinfo/)
+//! (That does, however, absolve me of the responsibility of finishing the documentation :D )
 //!
 //! Now, here is a brief summary of the information, making full use of
 //! all the structures like [`SystemInfo`], [`MemoryInfo`], [`DiskInfo`], [`NetworkInfo`],

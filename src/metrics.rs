@@ -17,6 +17,11 @@ pub struct ServerMetrics {
     /// Time in UNIX when the metrics were recorded
     pub timestamp: u64,
 }
+/// General system information: kernel version, username,
+/// uptime, processor architecture, and so on.
+/// # Example
+/// ```text
+/// ```
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Debug, Clone)]
 pub struct SystemInfo {
