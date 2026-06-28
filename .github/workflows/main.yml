@@ -57,7 +57,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Download artifact
-        uses: artifact/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: binary
           path: target/release/
