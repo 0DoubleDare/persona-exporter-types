@@ -1,6 +1,6 @@
-# Persona Exporter: Types
+# Persona Exporter Types
 ## RU
-`persona-exporter-types` — crate с типами данных для `persona-exporter`.
+`persona-exporter-types` это крейт который предоставляет типы данных для `persona-exporter`.
 
 Crate используется как единый источник структур и перечислений, которые применяются при обмене данными между компонентами проекта. Это снижает дублирование моделей и упрощает сопровождение совместимости.
 
@@ -12,7 +12,7 @@ Crate используется как единый источник структ
 
 ```toml
 [dependencies]
-persona-exporter-types = "1.3.2"
+persona-exporter-types = "1.0.0"
 ```
 
 ### Использование
@@ -27,7 +27,7 @@ use persona_exporter_types::*;
 
 ### Версионирование
 
-Используется схема `MAJOR.MINOR.PATCH` (пример: `1.3.2`).
+Используется схема `MAJOR.MINOR.PATCH` (пример: `1.0.0`).
 
 - `MAJOR` — главное обновление; может содержать несовместимые изменения и требовать адаптации кода.
 - `MINOR` — небольшое функциональное обновление; обычно обратно совместимо, но может нести интеграционные риски.
@@ -52,7 +52,7 @@ Add the dependency to `Cargo.toml`:
 
 ```toml
 [dependencies]
-persona-exporter-types = "1.3.2"
+persona-exporter-types = "1.0.0"
 ```
 
 ### Usage
@@ -67,7 +67,7 @@ Then use the crate’s public types wherever a shared data contract is required.
 
 ### Versioning
 
-The crate follows the `MAJOR.MINOR.PATCH` scheme (example: `1.3.2`).
+The crate follows the `MAJOR.MINOR.PATCH` scheme (example: `1.0.0`).
 
 - `MAJOR`: primary update; may include breaking changes and require code adaptation.
 - `MINOR`: small feature update; usually backward compatible, but may carry integration risks.
