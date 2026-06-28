@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - develop
 
 jobs:
   build-and-test:
@@ -47,6 +48,7 @@ jobs:
     environment: publish-and-release-crate
     permissions:
       contents: write
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
