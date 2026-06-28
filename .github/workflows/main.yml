@@ -32,7 +32,7 @@ jobs:
         id: package_name
         run: |
          PKG_NAME=$(grep -E '^name = ' Cargo.toml | head -n 1 | cut -d '"' -f 2)
-         echo "pkg_name=$PKG_NAME" >> GITHUB_OUTPUTS
+         echo "pkg_name=$PKG_NAME" >> $GITHUB_OUTPUT
         
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -45,6 +45,8 @@ jobs:
     runs-on: ubuntu-24.04
     needs: build-and-test
     environment: publish-and-release-crate
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -68,7 +70,7 @@ jobs:
         id: tag
         run: |
           VERSION=$(grep -E '^version = ' Cargo.toml | head -n 1 | cut -d '"' -f 2)
-          echo "version=$VERSION" >> GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Create github Release
         uses: softprops/action-gh-release@v2
