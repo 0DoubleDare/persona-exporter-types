@@ -9,7 +9,6 @@ jobs:
   build-and-test:
     name: Building and test code
     runs-on: ubuntu-24.04
-    environment: publish-and-release-crate
     outputs:
       package_name: ${{ steps.package_name.outputs.pkg_name }}
     steps:
@@ -19,9 +18,6 @@ jobs:
       - name: Install rust
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Login to crates.io
-        run: cargo login ${{ secrets.CRATES_IO_TOKEN }}
-        
       - name: Run test
         run: |
           cargo fmt -- --check
