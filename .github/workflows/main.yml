@@ -34,8 +34,8 @@ jobs:
       - name: Package name
         id: package_name
         run: |
-         PKG_NAME=$(grep -E '^version = ' Cargo.toml | head -n 1 | cut -d '"' -f 2)
-         echo "pkg_name=$PKG_NAME" >> GETHUB_OUTPUTS
+         PKG_NAME=$(grep -E '^name = ' Cargo.toml | head -n 1 | cut -d '"' -f 2)
+         echo "pkg_name=$PKG_NAME" >> GITHUB_OUTPUTS
         
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -82,7 +82,3 @@ jobs:
           files: target/release/${{ needs.build-and-test.outputs.package_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-      
-      
-        
