@@ -1,0 +1,88 @@
+name: Publish and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Building and test code
+    runs-on: ubuntu-24.04
+    outputs:
+      package_name: ${{ steps.package_name.outputs.pkg_name }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Login to crates.io
+        run: cargo login ${{ secrets.CRATES_IO_TOKEN }}
+        
+      - name: Run test
+        run: |
+          cargo fmt -- --check
+          cargo test
+          cargo test --doc
+          cargo publish --dry-run
+
+      - name: Build project
+        run: cargo build --release
+
+      - name: Package name
+        id: package_name
+        run: |
+         PKG_NAME=$(grep -E '^version = ' Cargo.toml | head -n 1 | cut -d '"' -f 2)
+         echo "pkg_name=$PKG_NAME" >> GETHUB_OUTPUTS
+        
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary
+          path: target/release/${{ steps.package_name.outputs.pkg_name }}
+
+  publish-and-release:
+    name: Publish and release
+    runs-on: ubuntu-24.04
+    needs: build-and-test
+    environment: publish-and-release-crate
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Download artifact
+        uses: artifact/download-artifact@v4
+        with:
+          name: binary
+          path: target/release/
+          
+      - name: Login to crates.io
+        run: cargo login ${{ secrets.CRATES_IO_TOKEN }}
+
+      - name: Publish to crates.io
+        run: cargo publish
+      
+      - name: Get tag name
+        id: tag
+        run: |
+          VERSION=$(grep -E '^version = ' Cargo.toml | head -n 1 | cut -d '"' -f 2)
+          echo "version=$VERSION" >> GITHUB_OUTPUT
+
+      - name: Create github Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.tag.outputs.version }}
+          name: Release v${{ steps.tag.outputs.version }}
+          generate_release_notes: true
+          files: target/release/${{ needs.build-and-test.outputs.package_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+      
+      
+        
