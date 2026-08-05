@@ -1,10 +1,15 @@
 # Persona Exporter Types
+
 ## RU
+
 `persona-exporter-types` это крейт который предоставляет типы данных для `persona-exporter`.
 
-Crate используется как единый источник структур и перечислений, которые применяются при обмене данными между компонентами проекта. Это снижает дублирование моделей и упрощает сопровождение совместимости.
+Crate используется как единый источник структур и перечислений, которые применяются при обмене данными между
+компонентами проекта. Это снижает дублирование моделей и упрощает сопровождение совместимости.
 
-Другие разработчики могут использовать эти же структуры в собственных Rust-проектах, включая веб-сайты и сервисы, которые также собирают и обрабатывают метрики. Это позволяет сохранять единый формат данных между независимыми реализациями.
+Другие разработчики могут использовать эти же структуры в собственных Rust-проектах, включая веб-сайты и сервисы,
+которые также собирают и обрабатывают метрики. Это позволяет сохранять единый формат данных между независимыми
+реализациями.
 
 ### Установка
 
@@ -34,6 +39,7 @@ use persona_exporter_types::*;
 - `PATCH` — безопасный патч; исправления и мелкие улучшения без изменения публичного контракта.
 
 Пример `1.3.2`:
+
 - `1` — major-уровень,
 - `3` — minor-уровень,
 - `2` — patch-уровень.
@@ -42,9 +48,11 @@ use persona_exporter_types::*;
 
 `persona-exporter-types` is a crate that provides data types for `persona-exporter`.
 
-The crate serves as a single source of shared structs and enums used for data exchange between project components. This reduces model duplication and simplifies compatibility maintenance.
+The crate serves as a single source of shared structs and enums used for data exchange between project components. This
+reduces model duplication and simplifies compatibility maintenance.
 
-Other developers can use the same structures in their own Rust projects, including websites and services that also collect and process metrics. This helps keep a consistent data format across independent implementations.
+Other developers can use the same structures in their own Rust projects, including websites and services that also
+collect and process metrics. This helps keep a consistent data format across independent implementations.
 
 ### Installation
 
@@ -74,6 +82,7 @@ The crate follows the `MAJOR.MINOR.PATCH` scheme (example: `1.0.0`).
 - `PATCH`: safe patch; fixes and minor improvements without changing the public contract.
 
 Example `1.3.2`:
+
 - `1` = major level
 - `3` = minor level
 - `2` = patch level

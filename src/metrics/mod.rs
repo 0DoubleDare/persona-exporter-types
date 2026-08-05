@@ -14,9 +14,12 @@ pub struct ServerMetrics {
     pub cpu: Option<CpuInfo>,
     /// Components indicators
     pub components: Option<ComponentsInfo>,
+    /// Metric showing the average load on processor threads
+    // pub load_average: Option<LoadAverage>,
     /// Time in UNIX when the metrics were recorded
-    pub timestamp: u64,
+    pub time: u64,
 }
+
 /// General system information: kernel version, username,
 /// uptime, processor architecture, and so on.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -49,6 +52,8 @@ pub struct SystemInfo {
     pub os_version: String,
     /// Your hostname
     pub host_name: String,
+    /// Metric showing the average load on processor threads
+    pub load_average: LoadAverage
 }
 /// Details system memory information
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -70,9 +75,6 @@ pub struct MemoryInfo {
     pub used_swap: u64,
     /// Free and physically accessible swap, see `free_memory`
     pub free_swap: u64,
-
-    /// Metric showing the average load on processor threads
-    pub load_avg: LoadAverage,
 }
 
 /// System disk space information for the root directory "/".
@@ -135,6 +137,7 @@ pub struct CpuInfo {
     pub threads: usize,
     /// Number of physical processor cores
     pub physical_core_count: usize,
+
 }
 
 /// Processor thread information, used in [`ComponentsInfo`]

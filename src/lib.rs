@@ -152,8 +152,7 @@
 //! functions for converting them: see [`ConvertTo`]
 //!
 
-mod metrics;
+pub mod metrics;
 mod traits;
 
-pub use metrics::*;
-pub use traits::*;
+pub use traits::data_unit as types;

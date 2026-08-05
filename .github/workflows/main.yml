@@ -46,7 +46,7 @@ jobs:
 
       - name: Publish to crates.io
         run: cargo publish
-      
+
       - name: Get tag name
         id: tag
         run: |
