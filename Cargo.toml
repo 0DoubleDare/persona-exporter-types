@@ -8,12 +8,13 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 serde = { version = "1.0.228", features = ["derive"], optional = true }
-influxdb-line-protocol = { version = "2.0.0" , optional = true}
+influxdb-line-protocol = { version = "2.0.0" , optional = true }
+sysinfo = { version = "0.39.6", optional = true }
 
 [features]
 default = ["serde", "convert-data-unit"]
 serde = ["dep:serde"]
-#influxdb2 = ["dep:influxdb2-derive", "dep:influxdb2", "dep:influxdb-line-protocol", "dep:serde_influxlp"]
 line-protocol = ["dep:influxdb-line-protocol"]
+from-trait-sysinfo = ["dep:sysinfo"]
 convert-data-unit = []
-full = ["serde", "line-protocol", "convert-data-unit"]
+full = ["serde", "line-protocol", "convert-data-unit", "from-trait-sysinfo"]

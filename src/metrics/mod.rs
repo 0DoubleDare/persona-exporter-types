@@ -1,3 +1,7 @@
+pub mod additional_structs;
+
+use crate::metrics::additional_structs::{DiskUsage, ProcessStatus};
+
 /// General structure that contains all the metrics of the working machine
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Debug, Clone)]
@@ -53,7 +57,8 @@ pub struct SystemInfo {
     /// Your hostname
     pub host_name: String,
     /// Metric showing the average load on processor threads
-    pub load_average: LoadAverage
+    pub load_average: LoadAverage,
+    pub processes: ProcessesInfo,
 }
 /// Details system memory information
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -137,7 +142,6 @@ pub struct CpuInfo {
     pub threads: usize,
     /// Number of physical processor cores
     pub physical_core_count: usize,
-
 }
 
 /// Processor thread information, used in [`ComponentsInfo`]
@@ -161,9 +165,36 @@ pub struct ComponentInfo {
 #[derive(Default, Debug, Clone)]
 pub struct LoadAverage {
     /// LA at one minute
-    pub one: f32,
+    pub one: f64,
     /// LA at five minutes
-    pub five: f32,
+    pub five: f64,
     /// LA at fifteen minutes
-    pub fifteen: f32,
+    pub fifteen: f64,
+}
+
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Debug, Clone)]
+pub struct SendInfo {
+    pub url: String,
+}
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Debug, Clone, Default)]
+pub struct ProcessesInfo {
+    pub exporter_metrics: Option<ProcessInfo>,
+    pub processes: Vec<ProcessInfo>,
+}
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Debug, Clone)]
+pub struct ProcessInfo {
+    pub name: String,
+    pub status: ProcessStatus,
+    pub disk_usage: DiskUsage,
+    pub program_id: String,
+    pub cpu_usage: f32,
+    pub memory_usage: u64,
+    pub virtual_memory: u64,
+    pub run_time: u64,
+    pub start_time: u64,
+    pub user_id: String,
+    pub group_id: String,
 }

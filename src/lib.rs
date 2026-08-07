@@ -152,6 +152,8 @@
 //! functions for converting them: see [`ConvertTo`]
 //!
 
+extern crate core;
+
 pub mod metrics;
 mod traits;
 
