@@ -1,4 +1,3 @@
-use crate::metrics::additional_structs::ProcessStatus;
 use crate::metrics::*;
 use influxdb_line_protocol::LineProtocolBuilder;
 use influxdb_line_protocol::builder::AfterField;
@@ -92,19 +91,19 @@ impl From<&ComponentInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
 
 impl From<&ProcessInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
     fn from(value: &ProcessInfo) -> Self {
-        let status = match value.status {
-            ProcessStatus::Run => "Run",
-            ProcessStatus::Idle => "Idle",
-            ProcessStatus::Sleep => "Sleep",
-            ProcessStatus::Zombie => "Zombie",
-            _ => "Unknown",
-        };
+        let status = value.status.to_string();
+        // ProcessStatus::Run => "Run",
+        // ProcessStatus::Idle => "Idle",
+        // ProcessStatus::Sleep => "Sleep",
+        // ProcessStatus::Zombie => "Zombie",
+        // _ => "Unknown",
+        // };
         LineProtocolBuilder::new()
             .measurement("metric_process")
             .tag("name", &value.name)
             .tag("user_id", &value.user_id)
             .tag("group_id", &value.group_id)
-            .field("status", status)
+            .field("status", &*status)
             .field("disk_usage.read_bytes", value.disk_usage.read_bytes)
             .field("disk_usage.written_bytes", value.disk_usage.written_bytes)
             .field(

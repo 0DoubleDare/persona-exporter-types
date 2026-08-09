@@ -1,5 +1,5 @@
 use crate::metrics::additional_structs::*;
-use crate::metrics::{LoadAverage, ProcessInfo, ProcessesInfo};
+use crate::metrics::{LoadAverage, ProcessInfo};
 use sysinfo::{CpuRefreshKind, LoadAvg, Process, ProcessStatus as SysProcessStatus, System};
 
 impl From<sysinfo::DiskUsage> for DiskUsage {

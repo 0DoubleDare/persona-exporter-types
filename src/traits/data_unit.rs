@@ -53,8 +53,8 @@ fn convert_from_to(data: f64, from: DataUnit, to: DataUnit) -> f64 {
 /// Data conversion between different units of measurement
 /// # Arguments
 /// * `from` - We specify the unit of our input data.
-///     This allows us to pass bytes, kilobytes, megabytes, etc.,
-///     to the function.
+///   This allows us to pass bytes, kilobytes, megabytes, etc.,
+///   to the function.
 /// * `to` - Specify the unit to which you want to convert the data.
 /// # Example
 /// ```rust

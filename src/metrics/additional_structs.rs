@@ -1,6 +1,6 @@
 use crate::metrics::ProcessInfo;
 use core::fmt;
-use std::fmt::{Formatter, write};
+use std::fmt::Formatter;
 
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Debug, Clone, Default)]
@@ -32,7 +32,7 @@ pub enum ProcessStatus {
 }
 
 impl fmt::Display for ProcessStatus {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(f, "{:?}", self)
     }
 }
