@@ -1,9 +1,15 @@
+pub mod additional_structs;
+
+use crate::metrics::additional_structs::{DiskUsage, ProcessStatus};
+
 /// General structure that contains all the metrics of the working machine
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Debug, Clone)]
 pub struct ServerMetrics {
     /// Display system information
     pub system: Option<SystemInfo>,
+    /// Display process list
+    pub process_list: Option<ProcessListInfo>,
     /// RAM memory information
     pub memory: Option<MemoryInfo>,
     /// Disk indicators
@@ -14,9 +20,13 @@ pub struct ServerMetrics {
     pub cpu: Option<CpuInfo>,
     /// Components indicators
     pub components: Option<ComponentsInfo>,
+
+    /// Metric showing the average load on processor threads
+    // pub load_average: Option<LoadAverage>,
     /// Time in UNIX when the metrics were recorded
-    pub timestamp: u64,
+    pub time: u64,
 }
+
 /// General system information: kernel version, username,
 /// uptime, processor architecture, and so on.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -49,6 +59,8 @@ pub struct SystemInfo {
     pub os_version: String,
     /// Your hostname
     pub host_name: String,
+    /// Metric showing the average load on processor threads
+    pub load_average: LoadAverage,
 }
 /// Details system memory information
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -70,9 +82,6 @@ pub struct MemoryInfo {
     pub used_swap: u64,
     /// Free and physically accessible swap, see `free_memory`
     pub free_swap: u64,
-
-    /// Metric showing the average load on processor threads
-    pub load_avg: LoadAverage,
 }
 
 /// System disk space information for the root directory "/".
@@ -158,9 +167,36 @@ pub struct ComponentInfo {
 #[derive(Default, Debug, Clone)]
 pub struct LoadAverage {
     /// LA at one minute
-    pub one: f32,
+    pub one: f64,
     /// LA at five minutes
-    pub five: f32,
+    pub five: f64,
     /// LA at fifteen minutes
-    pub fifteen: f32,
+    pub fifteen: f64,
+}
+
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Debug, Clone)]
+pub struct SendInfo {
+    pub url: String,
+}
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Debug, Clone, Default)]
+pub struct ProcessListInfo {
+    pub exporter_metrics: Option<ProcessInfo>,
+    pub process_list: Vec<ProcessInfo>,
+}
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[derive(Debug, Clone)]
+pub struct ProcessInfo {
+    pub name: String,
+    pub status: ProcessStatus,
+    pub disk_usage: DiskUsage,
+    pub program_id: String,
+    pub cpu_usage: f32,
+    pub memory_usage: u64,
+    pub virtual_memory: u64,
+    pub run_time: u64,
+    pub start_time: u64,
+    pub user_id: String,
+    pub group_id: String,
 }
