@@ -212,7 +212,7 @@ pub struct ProcessInfo {
     ///! Displays the time the process was started in UNIX time
     pub start_time: u64,
     ///! User ID of the user who started the process
-    pub user_id: String ,
+    pub user_id: String,
     ///! ID of the group that initiated the process
     pub group_id: String,
 }

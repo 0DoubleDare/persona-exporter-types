@@ -1,5 +1,5 @@
+use crate::DEFAULT_UNKNOWN_MESSAGE;
 use crate::metrics::*;
-use crate::{DEFAULT_UNKNOWN_MESSAGE};
 use influxdb_line_protocol::LineProtocolBuilder;
 use influxdb_line_protocol::builder::AfterField;
 
