@@ -1,3 +1,4 @@
+use crate::DEFAULT_UNKNOWN_MESSAGE;
 use crate::metrics::ProcessInfo;
 use core::fmt;
 use std::fmt::Formatter;
@@ -39,17 +40,17 @@ impl fmt::Display for ProcessStatus {
 impl Default for ProcessInfo {
     fn default() -> Self {
         ProcessInfo {
-            name: "unknown".to_string(),
-            status: ProcessStatus::Run,
+            name: DEFAULT_UNKNOWN_MESSAGE.to_string(),
+            status: ProcessStatus::default(),
             disk_usage: DiskUsage::default(),
-            program_id: "unknown".to_string(),
+            program_id: DEFAULT_UNKNOWN_MESSAGE.to_string(),
             cpu_usage: 0.0,
             memory_usage: 0,
             virtual_memory: 0,
             run_time: 0,
             start_time: 0,
-            user_id: "unknown".to_string(),
-            group_id: "unknown".to_string(),
+            user_id: DEFAULT_UNKNOWN_MESSAGE.to_string(),
+            group_id: DEFAULT_UNKNOWN_MESSAGE.to_string(),
         }
     }
 }

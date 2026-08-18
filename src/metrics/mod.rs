@@ -8,6 +8,8 @@ use crate::metrics::additional_structs::{DiskUsage, ProcessStatus};
 pub struct ServerMetrics {
     /// Display system information
     pub system: Option<SystemInfo>,
+    /// Display process list
+    pub process_list: Option<ProcessListInfo>,
     /// RAM memory information
     pub memory: Option<MemoryInfo>,
     /// Disk indicators
@@ -18,6 +20,7 @@ pub struct ServerMetrics {
     pub cpu: Option<CpuInfo>,
     /// Components indicators
     pub components: Option<ComponentsInfo>,
+
     /// Metric showing the average load on processor threads
     // pub load_average: Option<LoadAverage>,
     /// Time in UNIX when the metrics were recorded
@@ -58,7 +61,6 @@ pub struct SystemInfo {
     pub host_name: String,
     /// Metric showing the average load on processor threads
     pub load_average: LoadAverage,
-    pub processes: ProcessesInfo,
 }
 /// Details system memory information
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -179,9 +181,9 @@ pub struct SendInfo {
 }
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Debug, Clone, Default)]
-pub struct ProcessesInfo {
+pub struct ProcessListInfo {
     pub exporter_metrics: Option<ProcessInfo>,
-    pub processes: Vec<ProcessInfo>,
+    pub process_list: Vec<ProcessInfo>,
 }
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Debug, Clone)]

@@ -1,15 +1,13 @@
 # Persona Exporter Types
 
-## RU
-
 `persona-exporter-types` это крейт который предоставляет типы данных для `persona-exporter`.
 
-Crate используется как единый источник структур и перечислений, которые применяются при обмене данными между
+Crate используется как единый источник структур, перечислений и реализаций, которые применяются при обмене данными между
 компонентами проекта. Это снижает дублирование моделей и упрощает сопровождение совместимости.
 
-Другие разработчики могут использовать эти же структуры в собственных Rust-проектах, включая веб-сайты и сервисы,
-которые также собирают и обрабатывают метрики. Это позволяет сохранять единый формат данных между независимыми
-реализациями.
+Другие разработчики могут использовать эти же структуры в собственных Rust-проектах, включая веб-сайты, сервисы или даже собственные
+экспортеры метрик если моя структура вам покашется цельной и правильной.
+
 
 ### Установка
 
@@ -17,8 +15,16 @@ Crate используется как единый источник структ
 
 ```toml
 [dependencies]
-persona-exporter-types = "1.0.0"
+persona-exporter-types = { version = "2.1.0", features = "full" }
 ```
+#### Доступные features:
+- `serde`: Включает поддержку сериализации и десирилизации
+- `line-protocol`: Включает поддержку трейта From для крейта `influxdb-line-protocol`
+- `from-trait-sysinfo`: Преобразование структур из Sysinfo в локальные
+- `convert-data-unit`: Преобразование единиц измерения. К примеру из килобайт в мегабайты, из гигабайт в мегабайты.
+  Конвертация во все стороны работает для следующих единиц измерения: Байты, Килобайты, Мегабайты, Гигабайты, Терабайты и Петабайты.
+- `default`: Фичи по умолчанию, содержат `serde` и `convert-data-unit`
+- `full`: Включает всё
 
 ### Использование
 
@@ -26,9 +32,13 @@ persona-exporter-types = "1.0.0"
 
 ```rust
 use persona_exporter_types::*;
-```
 
-Далее использовать публичные типы crate в местах, где требуется общий контракт данных.
+// Структуры метрик
+use persona_exporter_types::metrics::*;
+
+// Типы и трейты: ConvertTo / DataUnit - конвертация единицы измерения памяти
+use persona_exporter_types::types::*;
+```
 
 ### Версионирование
 
@@ -43,46 +53,3 @@ use persona_exporter_types::*;
 - `1` — major-уровень,
 - `3` — minor-уровень,
 - `2` — patch-уровень.
-
-## EN
-
-`persona-exporter-types` is a crate that provides data types for `persona-exporter`.
-
-The crate serves as a single source of shared structs and enums used for data exchange between project components. This
-reduces model duplication and simplifies compatibility maintenance.
-
-Other developers can use the same structures in their own Rust projects, including websites and services that also
-collect and process metrics. This helps keep a consistent data format across independent implementations.
-
-### Installation
-
-Add the dependency to `Cargo.toml`:
-
-```toml
-[dependencies]
-persona-exporter-types = "1.0.0"
-```
-
-### Usage
-
-Import the crate in code:
-
-```rust
-use persona_exporter_types::*;
-```
-
-Then use the crate’s public types wherever a shared data contract is required.
-
-### Versioning
-
-The crate follows the `MAJOR.MINOR.PATCH` scheme (example: `1.0.0`).
-
-- `MAJOR`: primary update; may include breaking changes and require code adaptation.
-- `MINOR`: small feature update; usually backward compatible, but may carry integration risks.
-- `PATCH`: safe patch; fixes and minor improvements without changing the public contract.
-
-Example `1.3.2`:
-
-- `1` = major level
-- `3` = minor level
-- `2` = patch level

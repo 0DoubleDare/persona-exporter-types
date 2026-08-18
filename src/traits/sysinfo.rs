@@ -1,3 +1,4 @@
+use crate::DEFAULT_UNKNOWN_MESSAGE;
 use crate::metrics::additional_structs::*;
 use crate::metrics::{LoadAverage, ProcessInfo};
 use sysinfo::{CpuRefreshKind, LoadAvg, Process, ProcessStatus as SysProcessStatus, System};
@@ -50,12 +51,12 @@ impl From<&Process> for ProcessInfo {
             .user_id()
             .map(|id| id.to_string())
             .filter(|s| !s.is_empty())
-            .unwrap_or_else(|| "unknown".to_string());
+            .unwrap_or_else(|| DEFAULT_UNKNOWN_MESSAGE.to_string());
         let gid = value
             .group_id()
             .map(|id| id.to_string())
             .filter(|s| !s.is_empty())
-            .unwrap_or_else(|| "unknown".to_string());
+            .unwrap_or_else(|| DEFAULT_UNKNOWN_MESSAGE.to_string());
         ProcessInfo {
             name: value.name().to_str().unwrap().to_string(),
             status: ProcessStatus::from(value.status()),

@@ -1,16 +1,34 @@
 use crate::metrics::*;
+use crate::{DEFAULT_EMPTY_MESSAGE, DEFAULT_UNKNOWN_MESSAGE};
 use influxdb_line_protocol::LineProtocolBuilder;
 use influxdb_line_protocol::builder::AfterField;
 
-impl From<&SystemInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
-    fn from(value: &SystemInfo) -> Self {
+pub trait FromWithMeasurement<T> {
+    fn from_with_name(value: T, measurement: &str) -> Self;
+}
+
+pub trait IntoWithMeasurement<T> {
+    fn into_with_name(self, measurement: &str) -> T;
+}
+
+impl<Source, Target> IntoWithMeasurement<Target> for Source
+where
+    Target: FromWithMeasurement<Source>,
+{
+    fn into_with_name(self, measurement: &str) -> Target {
+        Target::from_with_name(self, measurement)
+    }
+}
+
+impl FromWithMeasurement<&SystemInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
+    fn from_with_name(value: &SystemInfo, measurement: &str) -> Self {
         let mut distro_like = value.distribution_id_like.join(",");
         if distro_like.is_empty() {
-            distro_like = "None".to_string()
+            distro_like = DEFAULT_EMPTY_MESSAGE.to_string();
         }
 
         LineProtocolBuilder::new()
-            .measurement("metric_system")
+            .measurement(measurement)
             .tag("name", &value.name)
             .tag("kernel_version", &value.kernel_version)
             .tag("kernel_long_version", &value.kernel_long_version)
@@ -27,10 +45,10 @@ impl From<&SystemInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
     }
 }
 
-impl From<&MemoryInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
-    fn from(value: &MemoryInfo) -> Self {
+impl FromWithMeasurement<&MemoryInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
+    fn from_with_name(value: &MemoryInfo, measurement: &str) -> Self {
         LineProtocolBuilder::new()
-            .measurement("metric_memory")
+            .measurement(measurement)
             .field("total_memory", value.total_memory)
             .field("used_memory", value.used_memory)
             .field("free_memory", value.free_memory)
@@ -41,10 +59,10 @@ impl From<&MemoryInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
     }
 }
 
-impl From<&DiskInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
-    fn from(value: &DiskInfo) -> Self {
+impl FromWithMeasurement<&DiskInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
+    fn from_with_name(value: &DiskInfo, measurement: &str) -> Self {
         LineProtocolBuilder::new()
-            .measurement("metric_disk")
+            .measurement(measurement)
             .tag("name", unknown_or_value(value.name.as_str()))
             .tag("file_system", unknown_or_value(&value.file_system))
             .tag("kind", unknown_or_value(&value.kind))
@@ -53,10 +71,10 @@ impl From<&DiskInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
     }
 }
 
-impl From<&NetworkInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
-    fn from(value: &NetworkInfo) -> Self {
+impl FromWithMeasurement<&NetworkInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
+    fn from_with_name(value: &NetworkInfo, measurement: &str) -> Self {
         LineProtocolBuilder::new()
-            .measurement("metric_network")
+            .measurement(measurement)
             .tag("interface_name", &value.interface_name)
             .field("total_rx_bytes", value.total_rx_bytes)
             .field("total_rx_packets", value.total_tx_packets)
@@ -67,20 +85,20 @@ impl From<&NetworkInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
     }
 }
 
-impl From<&CpuInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
-    fn from(value: &CpuInfo) -> Self {
+impl FromWithMeasurement<&CpuInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
+    fn from_with_name(value: &CpuInfo, measurement: &str) -> Self {
         LineProtocolBuilder::new()
-            .measurement("metric_cpu")
+            .measurement(measurement)
             .field("usage", value.cpu_usage as f64)
             .field("threads", value.threads as f64)
             .field("physical_core_count", value.physical_core_count as i64)
     }
 }
 
-impl From<&ComponentInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
-    fn from(value: &ComponentInfo) -> Self {
+impl FromWithMeasurement<&ComponentInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
+    fn from_with_name(value: &ComponentInfo, measurement: &str) -> Self {
         LineProtocolBuilder::new()
-            .measurement("metric_component")
+            .measurement(measurement)
             .tag("id", &value.id)
             .tag("name", &value.name)
             .field("temp", value.temp as i64)
@@ -89,17 +107,11 @@ impl From<&ComponentInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
     }
 }
 
-impl From<&ProcessInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
-    fn from(value: &ProcessInfo) -> Self {
+impl FromWithMeasurement<&ProcessInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
+    fn from_with_name(value: &ProcessInfo, measurement: &str) -> Self {
         let status = value.status.to_string();
-        // ProcessStatus::Run => "Run",
-        // ProcessStatus::Idle => "Idle",
-        // ProcessStatus::Sleep => "Sleep",
-        // ProcessStatus::Zombie => "Zombie",
-        // _ => "Unknown",
-        // };
         LineProtocolBuilder::new()
-            .measurement("metric_process")
+            .measurement(measurement)
             .tag("name", &value.name)
             .tag("user_id", &value.user_id)
             .tag("group_id", &value.group_id)
@@ -122,15 +134,23 @@ impl From<&ProcessInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
             .field("start_time", value.start_time)
     }
 }
+// impl From<&ProcessInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
+//     fn from(value: &ProcessInfo) -> Self {
+//
+//     }
+// }
 
-impl From<&SendInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
-    fn from(value: &SendInfo) -> Self {
+impl FromWithMeasurement<&SendInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
+    fn from_with_name(value: &SendInfo, measurement: &str) -> Self {
         LineProtocolBuilder::new()
-            .measurement("send_info")
+            .measurement(measurement)
             .field("url", &*value.url)
     }
 }
-
 fn unknown_or_value(v: &str) -> &str {
-    if v.is_empty() { "unknown" } else { v }
+    if v.is_empty() {
+        DEFAULT_UNKNOWN_MESSAGE
+    } else {
+        v
+    }
 }
