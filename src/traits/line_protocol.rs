@@ -1,8 +1,9 @@
 use crate::metrics::*;
-use crate::{DEFAULT_EMPTY_MESSAGE, DEFAULT_UNKNOWN_MESSAGE};
+use crate::{DEFAULT_UNKNOWN_MESSAGE};
 use influxdb_line_protocol::LineProtocolBuilder;
 use influxdb_line_protocol::builder::AfterField;
 
+const DEFAULT_EMPTY_MESSAGE: &str = "empty";
 pub trait FromWithMeasurement<T> {
     fn from_with_name(value: T, measurement: &str) -> Self;
 }
