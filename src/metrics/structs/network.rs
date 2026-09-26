@@ -1,9 +1,5 @@
-use compact_str::CompactString;
-use influxdb_line_protocol::builder::AfterField;
-use influxdb_line_protocol::LineProtocolBuilder;
 use crate::metrics::traits::Clear;
-use crate::metrics::type_aliases::{ExporterString};
-use crate::traits::line_protocol::FromWithMeasurement;
+use compact_str::CompactString;
 
 /// Network information
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -25,21 +21,6 @@ pub struct NetworkInfo {
     pub total_tx_packets: u64,
     /// Total errors when sending data
     pub total_tx_errors: u64,
-}
-
-#[cfg(feature = "line-protocol")]
-impl FromWithMeasurement<&NetworkInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
-    fn from_with_name(value: &NetworkInfo, measurement: &str) -> Self {
-        LineProtocolBuilder::new()
-            .measurement(measurement)
-            .tag("interface_name", &value.interface_name)
-            .field("total_rx_bytes", value.total_rx_bytes)
-            .field("total_rx_packets", value.total_tx_packets)
-            .field("total_rx_errors", value.total_rx_errors)
-            .field("total_tx_bytes", value.total_tx_bytes)
-            .field("total_tx_packets", value.total_tx_packets)
-            .field("total_tx_errors", value.total_tx_errors)
-    }
 }
 
 impl Clear for NetworkInfo {

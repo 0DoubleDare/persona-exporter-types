@@ -1,16 +1,20 @@
-use crate::DEFAULT_UNKNOWN_MESSAGE;
-use crate::metrics::*;
+use crate::metrics::line_protocol::GlobalTags;
+use compact_str::CompactString;
 use influxdb_line_protocol::LineProtocolBuilder;
 use influxdb_line_protocol::builder::AfterField;
+use std::collections::HashMap;
 
-pub(crate) const DEFAULT_EMPTY_MESSAGE: &str = "empty";
 pub trait FromWithMeasurement<T> {
-    fn from_with_name(value: T, measurement: &str) -> Self;
+    fn from_with_name(value: T, measurement: &str, global_tags: &GlobalTags) -> Self;
 }
 
 pub trait IntoWithMeasurement<T> {
     // type Target;
-    fn into_with_name(self, measurement: &str) -> T;
+    fn into_with_name(self, measurement: &str, global_tags: &GlobalTags) -> T;
+}
+
+pub trait InsertGlobalTags {
+    fn insert_global_tags(self, global_tags: &GlobalTags) -> Self;
 }
 
 pub trait FinishLineProtocol {
@@ -27,11 +31,7 @@ impl<T, U> IntoWithMeasurement<U> for T
 where
     U: FromWithMeasurement<T>,
 {
-    fn into_with_name(self, measurement: &str) -> U {
-        U::from_with_name(self, measurement)
+    fn into_with_name(self, measurement: &str, global_tags: &GlobalTags) -> U {
+        U::from_with_name(self, measurement, global_tags)
     }
 }
-
-
-
-

@@ -1,10 +1,6 @@
-use compact_str::CompactString;
-use influxdb_line_protocol::builder::AfterField;
-use influxdb_line_protocol::LineProtocolBuilder;
-use smallvec::SmallVec;
-use sysinfo::LoadAvg;
 use crate::metrics::traits::Clear;
-use crate::traits::line_protocol::{FromWithMeasurement, DEFAULT_EMPTY_MESSAGE};
+use compact_str::CompactString;
+use smallvec::SmallVec;
 
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Default, Debug, Clone)]
@@ -39,8 +35,6 @@ pub struct SystemInfo {
     pub host_name: CompactString,
     /// Metric showing the average load on processor threads
     pub load_average: LoadAverage,
-
-
 }
 /// Load Average structure for `load_avg` field in [CpuListInfo]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
@@ -53,35 +47,6 @@ pub struct LoadAverage {
     /// LA at fifteen minutes
     pub fifteen: f64,
 }
-
-#[cfg(feature = "line-protocol")]
-impl FromWithMeasurement<&SystemInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
-    fn from_with_name(value: &SystemInfo, measurement: &str) -> Self {
-        let mut distro_like = CompactString::from(value.distribution_id_like.join(","));
-        if distro_like.is_empty() {
-            distro_like = CompactString::from(DEFAULT_EMPTY_MESSAGE);
-        }
-
-        LineProtocolBuilder::new()
-            .measurement(measurement)
-            .tag("name", &value.name)
-            .tag("kernel_version", &value.kernel_version)
-            .tag("kernel_long_version", &value.kernel_long_version)
-            .tag("distribution_id", &value.distribution_id)
-            .tag("distribution_id_like", distro_like.as_str())
-            .tag("cpu_arch", &value.cpu_arch)
-            .tag("os_version", &value.os_version)
-            .tag("host_name", &value.host_name)
-            .field("boot_time", value.boot_time)
-            .field("uptime", value.uptime)
-            .field("load_average.one", value.load_average.one)
-            .field("load_average.five", value.load_average.five)
-            .field("load_average.fifteen", value.load_average.fifteen)
-    }
-}
-
-#[cfg(feature = "from-trait-sysinfo")]
-
 
 impl Clear for SystemInfo {
     fn clear_dynamic(&mut self) {

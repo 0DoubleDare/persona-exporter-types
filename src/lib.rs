@@ -255,6 +255,7 @@
 //! functions for converting them: see [`ConvertTo`]
 
 pub const DEFAULT_UNKNOWN_MESSAGE: &str = "unknown";
+pub const DEFAULT_EMPTY_MESSAGE: &str = "empty";
 pub mod metrics;
 pub mod traits;
 
