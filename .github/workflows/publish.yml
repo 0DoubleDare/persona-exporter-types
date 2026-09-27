@@ -19,8 +19,6 @@ jobs:
           shared-key: "co-cache-${{ hashFiles('**/Cargo.lock**') }}"
 
       - name: Release on crates.io
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: |
           cargo login ${{ secrets.CARGO_REGISTRY_TOKEN }}
           cargo publish
