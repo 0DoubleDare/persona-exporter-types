@@ -78,7 +78,7 @@ impl FromWithNormalizeCpu<&Process> for ProcessInfo {
             name: value
                 .name()
                 .to_str()
-                .unwrap_or_else(|| DEFAULT_UNKNOWN_MESSAGE)
+                .unwrap_or(DEFAULT_UNKNOWN_MESSAGE)
                 .to_compact_string(),
             status: ProcessStatus::from(value.status()),
             disk_usage: DiskUsage::from(value.disk_usage()),
@@ -110,7 +110,7 @@ impl From<&Process> for ProcessInfo {
             name: value
                 .name()
                 .to_str()
-                .unwrap_or_else(|| DEFAULT_UNKNOWN_MESSAGE)
+                .unwrap_or(DEFAULT_UNKNOWN_MESSAGE)
                 .to_compact_string(),
             status: ProcessStatus::from(value.status()),
             disk_usage: DiskUsage::from(value.disk_usage()),

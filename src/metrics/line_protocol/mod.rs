@@ -35,7 +35,7 @@ impl InsertGlobalTags for LineProtocolBuilder<Vec<u8>, AfterMeasurement> {
         let mut builder = self;
 
         for (tag, value) in global_tags {
-            builder = builder.tag(&tag, &value);
+            builder = builder.tag(tag, value);
         }
 
         builder

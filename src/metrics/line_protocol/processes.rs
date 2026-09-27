@@ -13,7 +13,7 @@ impl FromWithMeasurement<&ProcessInfo> for LineProtocolBuilder<Vec<u8>, AfterFie
             .tag("name", &value.name)
             .tag("user_id", &value.user_id)
             .tag("group_id", &value.group_id)
-            .tag("program_id", &*value.program_id)
+            .tag("program_id", &value.program_id)
             .field("status", &*status)
             .field("disk_usage.read_bytes", value.disk_usage.read_bytes)
             .field("disk_usage.written_bytes", value.disk_usage.written_bytes)

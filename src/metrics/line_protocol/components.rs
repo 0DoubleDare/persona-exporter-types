@@ -1,10 +1,8 @@
 use crate::metrics::line_protocol::GlobalTags;
 use crate::metrics::structs::components::ComponentInfo;
 use crate::traits::line_protocol::{FromWithMeasurement, InsertGlobalTags};
-use compact_str::CompactString;
 use influxdb_line_protocol::LineProtocolBuilder;
-use influxdb_line_protocol::builder::{AfterField, AfterMeasurement, AfterTag};
-use std::collections::HashMap;
+use influxdb_line_protocol::builder::AfterField;
 
 impl FromWithMeasurement<&ComponentInfo> for LineProtocolBuilder<Vec<u8>, AfterField> {
     fn from_with_name(value: &ComponentInfo, measurement: &str, global_tags: &GlobalTags) -> Self {

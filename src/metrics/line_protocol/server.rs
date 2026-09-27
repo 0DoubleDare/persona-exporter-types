@@ -9,8 +9,8 @@ impl FromWithMeasurement<&SendInfo> for LineProtocolBuilder<Vec<u8>, AfterField>
         LineProtocolBuilder::new()
             .measurement(measurement)
             .insert_global_tags(global_tags)
-            .tag("url", &*value.url)
-            .tag("server_name", &*value.server_name)
+            .tag("url", &value.url)
+            .tag("server_name", &value.server_name)
             .field("", 0.0)
     }
 }

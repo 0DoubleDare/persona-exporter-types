@@ -1,8 +1,6 @@
 use crate::metrics::line_protocol::GlobalTags;
-use compact_str::CompactString;
 use influxdb_line_protocol::LineProtocolBuilder;
 use influxdb_line_protocol::builder::AfterField;
-use std::collections::HashMap;
 
 pub trait FromWithMeasurement<T> {
     fn from_with_name(value: T, measurement: &str, global_tags: &GlobalTags) -> Self;
